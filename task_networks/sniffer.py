@@ -7,7 +7,7 @@ import re
 
 def parseArguments(args):
     host = ""
-    ports = range(1,65535)
+    ports = range(1,65536)
     if '--host' not in args or args.index('--host') == len(args)- 1:
         raise ValueError("You must specify a host to scan ports")
     else:
