@@ -120,7 +120,8 @@ def scan(host, portsString = '', module = True, silent = False):
     host:str        an obligatory argument, which provies a host for scanning. It can be an
                     IP address as string of four numbers, separated by dots or a hostname
 
-    posrtString:str an optional argument to define a range of scanned ports. Should be provides                  as a string, composed of two numbers, separated by dash. If not provided or
+    posrtString:str an optional argument to define a range of scanned ports. Should be provideed
+                    as a string, composed of two numbers, separated by dash. If not provided or
                     provided incorrectly the port range will be set to default full range (1-65535)
 
     module:bool     a bool argument, which tells the function to run as a module, that is to
