@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-"""Simplle port sniffer
+
+"""Simple port sniffer
 
 This is a simple port sniffer, which can be calles as command line script or imported as a module.
 When used from command line it takes 2 named paramentes:
@@ -35,20 +36,12 @@ import sys
 import re
 
 def _twister():
-    current = '\\'
+    symbols = ['|', '/', '-', '\\']
+    current = -1
     while True:
-        if current == '\\':
-            current = '|'
-            yield current
-        elif current == '|':
-            current = '/'
-            yield current
-        elif current == '/':
-            current = '-'
-            yield current
-        else:
-            current = "\\"
-            yield current
+        current += 1
+        if current == 4: current = 0
+        yield symbols[current]
 
 def _parseHost(host):
     if not re.search('^((25[0-5]|2[0-4]\d|[01]?\d?\d)\.){3}(25[0-5]|2[0-4]\d|[01]?\d?\d)$', host):
@@ -102,7 +95,7 @@ def _scan(host, ports, module = False, silent = False):
     if not silent or not module:
         result = ''
         if len(openPorts):
-            result = "Port{} {} {}".format('s' if len(openPorts)%1 == 1 else '',
+            result = "Port{} {} {}".format('s' if len(openPorts) == 1 else '',
             ' '.join((str(p) for p in openPorts)), "are" if len(openPorts) > 1 else "is")
         else:
             result = "No ports are"
