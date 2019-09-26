@@ -113,4 +113,4 @@ New for me was the existance of memory mapping segment, different from the heap.
 
 ![networking](task_networks/networking.png)
 
-New for me were the linux concole tools for network management, some of them I found very usefull and intend to use them in future.
+I learned something new and was very surprised not by the lessons, but by something I've got to know while completing the coding tasks. It appears that there is absolutely, completely, literally no way in javascript to wait for a promice result in a sync code. So, I've spent some exciting time, making out how make proper promices from async funtions not returning promices and make them execute consequently. And I am positively shall use this in future;
