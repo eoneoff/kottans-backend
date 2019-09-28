@@ -75,7 +75,7 @@ function isIpAddress(address){
 }
 
 function isRange(ip) {
-    return ip.search(/\d{1,4}-\d{1,4}/) == -1;
+    return ip.search(/^\d{1,4}-\d{1,4}$/) == -1;
 }
 
 function isInvalidPortsRange(portsRange){
@@ -181,9 +181,8 @@ async function scan(host, ports, args = {silent:false,module:false}){
     if(args.module) return openPorts;
 }
 
-module.exports.scan = async (host, ports = "", args={module:true, silent:false}) =>{
-    return await scan(await parseHost(host), parsePorts(ports), args);
-};
+module.exports.scan = async (host, ports = "", args={module:true, silent:false}) =>
+    await scan(await parseHost(host), parsePorts(ports), args);
 
 module.exports.help = () => console.log(help.function);
 
