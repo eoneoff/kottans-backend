@@ -114,3 +114,45 @@ New for me was the existance of memory mapping segment, different from the heap.
 ![networking](task_networks/networking.png)
 
 I learned something new and was very surprised not by the lessons, but by something I've got to know while completing the coding tasks. It appears that there is absolutely, completely, literally no way in javascript to wait for a promice result in a sync code. So, I've spent some exciting time, making out how make proper promices from async funtions not returning promices and make them execute consequently. And I am positively shall use this in future;
+
+## HTTP & HTTPS
+
+My curl request to github api were:
+
+`curl https://api.github.com/users/eoneoff`
+
+`curl -i https://api.github.com/users/eoneoff`
+
+`curl --user "eoneoff:******" https://api.github.com/gists/starred`
+
+`curl -i https://api.github.com/orgs/kottans/repos`
+
+```bash
+curl -H 'Authorization: token *******'
+        -d '{
+            "title": "Test issue for kottans",
+            "body": "I have got no body",
+            "labels":["no_actual_problem"]}' 
+    https://api.github.com/repos/eoneoff/kottans-backend/issues
+```
+
+1. Three possible negative consequences of not using https are comprimising pirvacy and intergity of your data, sent on network and wrong identification of the one, you are comminicating with. Comprimising privacy means, that without https your data can easily be intercepted and read. Comprimising integrity means, than your intercepted data can be not only read, but also changed without you or the receiver knowing. And comporomising identification means than you can be fooled in beleaving into communicating with someone, while you would be communicating with imposter.
+
+2. The public key cyrptografy is a method of data decription, in which there exists two keys: pulic, known for everyone, and private, known only to the owner. Data, encripted by public key can be decripted by private key, but not by public key. And vice-versa, data, decripted by private key, can be decripted by public key. So, having someone public key we can decript data, send in to the person and he and only he can decript the data. On the other hand, if we receive an encripted message and dercipti in with the person's public key, we know, that we had really received it from that person, because only he could have encripted it.
+
+3. Pet clininc requests:
+
+   1. Add new pet: POST request with json object wit pet data in request body.
+   2. Search pet by name: a GET request with pet name in query path or query params:
+        
+        `clinic/pets/search/<pet_name>` 
+        
+        or
+
+        `clinic/pets/search?name=<pet_name>`
+
+    3. Change name of exitsting pet: a PUT request with pet id or name in the path and new pet data in the json object in the body
+    4. Add new info about pet health: POST or PUT request, depending on the database structure and design decisions (PUT new info is stored as a addition or change to existing record in database or POST if it is stored as a new record, the latter is better option) with the info in the request body
+    5. Assing pet to a particular doctor in the clinic: again, POST or PUT request
+    6. Register an appointment for a pet: POST request with new appointment data in the request body
+
