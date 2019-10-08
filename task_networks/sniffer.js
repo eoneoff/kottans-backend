@@ -61,8 +61,8 @@ with then() method`
 const dns = require("dns").promises;
 const Socket = require("et").Socket;
 
-function* twister(){
-    let symbols = ["|","/","-","\\"];
+function* twister() {
+    let symbols = ["|", "/", "-", "\\"];
     let current = 0;
     while (true) {
         if (current == 4) current = 0;
@@ -70,7 +70,7 @@ function* twister(){
     }
 }
 
-function isIpAddress(address){
+function isIpAddress(address) {
     return address.search(/^((25[0-5]|2[0-4]\d|[01]?\d?\d)\.){3}(25[0-5]|2[0-4]\d|[01]?\d?\d)$/) == -1;
 }
 
@@ -78,15 +78,15 @@ function isRange(ip) {
     return ip.search(/^\d{1,4}-\d{1,4}$/) == -1;
 }
 
-function isInvalidPortsRange(portsRange){
+function isInvalidPortsRange(portsRange) {
     return +portsRange[0] >= +portsRange[1] || +portsRange[0] < 1 || +portsRange[0] > 65535
-    || +portsRange[1] < 1 || +portsRange[1]>65535;
+    || +portsRange[1] < 1 || +portsRange[1] > 65535;
 }
 
-async function parseHost(hostName){
+async function parseHost(hostName) {
     let host = "";
-    if(isIpAddress(hostName)){
-        try{
+    if (isIpAddress(hostName)) {
+        try {
             host = (await dns.lookup(hostName)).address;
         } catch (err) {
             throw "Hostname can not be resolved";
@@ -97,12 +97,12 @@ async function parseHost(hostName){
     return host;
 }
 
-function parsePorts(ports){
-    if(isRange(ports)){
+function parsePorts(ports) {
+    if (isRange(ports)) {
         throw "Invalid port range argument";
     } else {
         let limits = ports.split("-");
-        if (isInvalidPortsRange(limits)){
+        if (isInvalidPortsRange(limits)) {
             throw "Port numbers out of range";
         } else {
             limits[1]++;
@@ -111,21 +111,21 @@ function parsePorts(ports){
     }
 }
 
-async function parseArguments(args){
+async function parseArguments(args) {
     let host = "";
     let ports = [1, 65536];
     let hostIndex = args.indexOf("--host") + 1;
-    if(hostIndex == 0 || hostIndex == args.length){
+    if (hostIndex == 0 || hostIndex == args.length) {
         throw "You must specify a host to scan ports";
     } else {
         host = await parseHost(args[hostIndex]);
     }
     let portsIndex = args.indexOf("--ports") + 1;
-    if (portsIndex != 0){
-        if(portsIndex == args.length){
+    if (portsIndex != 0) {
+        if (portsIndex == args.length) {
             console.log("Invalis ports specified, setting to default (1-65535)");
         } else {
-            try{
+            try {
                 ports = parsePorts(args[portsIndex]);
             } catch (err) {
                 console.log("Invalid ports specified, setting to default(1-65535)");
@@ -136,57 +136,57 @@ async function parseArguments(args){
     return {host, ports};
 }
 
-async function scan(host, ports, args = {silent:false,module:false}){
+async function scan(host, ports, args = {silent:false, module:false}) {
     let openPorts = [];
     let tw = twister();
     process.stdout.write("scanning ");
-    for(let port = +ports[0]; port < ports[1]; ++port) {
+    for (let port = +ports[0]; port < ports[1]; ++port) {
         process.stdout.write(`${tw.next().value}\b`);
-        try{
-            await new Promise((resolve, reject) =>{
+        try {
+            await new Promise((resolve, reject) => {
                 let socket = new Socket();
                 socket.setTimeout(300);
-                socket.on("connect", () =>{
+                socket.on("connect", () => {
                     process.stdout.write(". ");
                     openPorts.push(port);
                     socket.destroy();
                     resolve();
                 });
-                socket.on("timeout", ()=>{
+                socket.on("timeout", () => {
                     socket.destroy();
                     reject();
                 });
-                socket.on("error", () =>{
+                socket.on("error", () => {
                     socket.destroy();
                     reject();
                 });
                 socket.connect(port, host);
             });
-        } catch (err){
+        } catch (err) {
             
         }
     }
 
-    if(!args.silent || !args.module){
+    if (!args.silent || !args.module) {
         let result = "";
-        if(openPorts.length){
-            result = `Port${openPorts.length > 1 ? "s": ""} ${openPorts.join(", ")} ${openPorts.length > 1 ? "are" : "is"}`;
-        } else{
+        if (openPorts.length) {
+            result = `Port${openPorts.length > 1 ? "s" : ""} ${openPorts.join(", ")} ${openPorts.length > 1 ? "are" : "is"}`;
+        } else {
             result = "No ports are";
         }
 
         console.log(` \n${result} open`);
     }
 
-    if(args.module) return openPorts;
+    if (args.module) return openPorts;
 }
 
-module.exports.scan = async (host, ports = "", args={module:true, silent:false}) =>
+module.exports.scan = async (host, ports = "", args = {module:true, silent:false}) =>
     await scan(await parseHost(host), parsePorts(ports), args);
 
 module.exports.help = () => console.log(help.function);
 
-if(process.argv.includes("--help")){
+if (process.argv.includes("--help")) {
     console.log(help.script);
 } else {
     try {

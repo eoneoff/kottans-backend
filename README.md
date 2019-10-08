@@ -1,5 +1,6 @@
-Though I was familiar with most of the material it was still very interesting to review it. I especially enjoyed the udacity git course.
+# Kottans Backend
 
+Though I was familiar with most of the material it was still very interesting to review it. I especially enjoyed the udacity git course.
 
 ## Unix shell
 
@@ -15,7 +16,6 @@ Though I was familiar with most of the material it was still very interesting to
 
 Making interactive tutorials was fun, but I knew already most of it's contents. Linuxcommand was actually much more fun. Especially I liked how a guy called Windows "legacy operating system" and "the other operating system" as if it was Lord Voldemort and you can't say its name.\
 And I was also familiar with, but again amused by a weird way the bash shell defines function: with brackets just as a useless sintax marker and passing arguments as command line arguments. I am shure, there's a very good reason to make it like this, but it turnes reading function arguments into a tricky business.
-
 
 ## Git Collaboration
 
@@ -132,7 +132,7 @@ curl -H 'Authorization: token *******'
         -d '{
             "title": "Test issue for kottans",
             "body": "I have got no body",
-            "labels":["no_actual_problem"]}' 
+            "labels":["no_actual_problem"]}'
     https://api.github.com/repos/eoneoff/kottans-backend/issues
 ```
 
@@ -144,15 +144,20 @@ curl -H 'Authorization: token *******'
 
    1. Add new pet: POST request with json object wit pet data in request body.
    2. Search pet by name: a GET request with pet name in query path or query params:
-        
-        `clinic/pets/search/<pet_name>` 
-        
+
+        `clinic/pets/search/<pet_name>`
+
         or
 
         `clinic/pets/search?name=<pet_name>`
 
-    3. Change name of exitsting pet: a PUT request with pet id or name in the path and new pet data in the json object in the body
-    4. Add new info about pet health: POST or PUT request, depending on the database structure and design decisions (PUT new info is stored as a addition or change to existing record in database or POST if it is stored as a new record, the latter is better option) with the info in the request body
-    5. Assing pet to a particular doctor in the clinic: again, POST or PUT request
-    6. Register an appointment for a pet: POST request with new appointment data in the request body
+   3. Change name of exitsting pet: a PUT request with pet id or name in the path and new pet data in the json object in the body
+   4. Add new info about pet health: POST or PUT request, depending on the database structure and design decisions (PUT new info is stored as a addition or change to existing record in database or POST if it is stored as a new record, the latter is better option) with the info in the request body
+   5. Assing pet to a particular doctor in the clinic: again, POST or PUT request
+   6. Register an appointment for a pet: POST request with new appointment data in the request body
 
+## Patterns
+
+![architecture&design](task_patterns/architecture&design.png)
+
+There was a lot of new to me in the Udacity Acthitecture and Design course and though it is rather long and academic, there are some things about development and design of code which I intend to use. Also I was somewhat surprised by the way python developers understand design patterns — just as a way to implement some features your language doesn't have "out of the box". If find this idea quite wrong.
