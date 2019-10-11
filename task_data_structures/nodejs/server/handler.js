@@ -6,7 +6,7 @@ module.exports.dataHandler = (stack, list) => {
             response.writeHead(200, {"Content-Type": "application/json"});
             response.end(JSON.stringify({"data": list.showList()}));
         } else if (request.method == "POST" || request.method == "DELETE") {
-            if (request.headers["content-type"] == "application/json") {
+            if (isJson(request)) {
                 let body = "";
                 request.on("data", chunk => body += chunk.toString());
                 request.on("end", () => {
@@ -19,6 +19,7 @@ module.exports.dataHandler = (stack, list) => {
                                 response.writeHead(200);
                                 response.end();
                             }
+                            break;
                         case "list":
                             switch (request.method) {
                             case "POST":
@@ -55,8 +56,8 @@ module.exports.dataHandler = (stack, list) => {
                 });
             } else if (structureType == "stack" && request.method == "DELETE") {
                 response.writeHead(200);
-                resp = JSON.stringify({"data": stack.pop()});
-                response.end(resp);
+                response.end(JSON.stringify({"data": stack.pop()}),
+                    {"Content-Type": "application/json"});
             } else {
                 response.writeHead(400, "Wrong content type");
                 response.end();
@@ -68,4 +69,8 @@ module.exports.dataHandler = (stack, list) => {
 function isValidType(value) {
     return typeof(value) == "string"
         || typeof(value) == "number";
+}
+
+function isJson(request) {
+    return request.headers["content-type"] == "application/json";
 }
