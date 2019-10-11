@@ -1,6 +1,6 @@
-const {Node} = require("node");
+const {Node} = require("./linkedList");
 
-module.exports = class Stack {
+module.exports.Stack = class Stack {
     constructor() {
         this._root = null;
         this._length = 0;

@@ -1,6 +1,6 @@
-const {Node} = require("node");
+const {Node} = require("./node");
 
-module.exports = class LinkedList {
+module.exports.LinkedList = class LinkedList {
     constructor() {
         this._root = null;
         this._length = 0;
@@ -46,7 +46,7 @@ module.exports = class LinkedList {
         }
     }
 
-    show_list() {
+    showList() {
         return Array.from(this, node => node.value);
     }
 
