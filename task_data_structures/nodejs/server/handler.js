@@ -14,22 +14,15 @@ module.exports.dataHandler = (stack, list) => {
                     if (isValidType(data.data)) {
                         switch (structureType) {
                         case "stack":
-                            switch (request.method) {
-                            case "POST":
+                            if (request.method == "POST") {
                                 stack.push(data.data);
                                 response.writeHead(200);
                                 response.end();
-                                break;
-                            case "DELETE":
-                                response.writeHead(200);
-                                response.end(JSON.stringify({"data": stack.pop()}));
-                                break;
                             }
-                            break;
                         case "list":
                             switch (request.method) {
                             case "POST":
-                                if (isValidType(data.successor)) {
+                                if (!data.successor || isValidType(data.successor)) {
                                     try {
                                         list.insert(data.data, data.successor);
                                         response.writeHead(200);
@@ -60,6 +53,10 @@ module.exports.dataHandler = (stack, list) => {
                         response.end();
                     }
                 });
+            } else if (structureType == "stack" && request.method == "DELETE") {
+                response.writeHead(200);
+                resp = JSON.stringify({"data": stack.pop()});
+                response.end(resp);
             } else {
                 response.writeHead(400, "Wrong content type");
                 response.end();

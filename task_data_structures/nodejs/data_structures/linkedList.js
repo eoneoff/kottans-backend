@@ -36,7 +36,7 @@ module.exports.LinkedList = class LinkedList {
             this._length--;
         } else {
             for (let node of this) {
-                if ((node.next || {}).value) {
+                if ((node.next || {}).value == value) {
                     node.next = node.next.next;
                     this._length--;
                     return;

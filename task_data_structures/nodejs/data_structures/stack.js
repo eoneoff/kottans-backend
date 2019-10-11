@@ -1,4 +1,4 @@
-const {Node} = require("./linkedList");
+const {Node} = require("./node");
 
 module.exports.Stack = class Stack {
     constructor() {
