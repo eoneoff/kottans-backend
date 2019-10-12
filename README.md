@@ -162,6 +162,10 @@ curl -H 'Authorization: token *******'
 
 There was a lot of new to me in the Udacity Acthitecture and Design course and though it is rather long and academic, there are some things about development and design of code which I intend to use. Also I was somewhat surprised by the way python developers understand design patterns — just as a way to implement some features your language doesn't have "out of the box". If find this idea quite wrong.
 
-## Data structures
+## Data Structures
 
 Comparing to previous lesson (Patterns) if was very short and easy, even shorter and easier, than I'd like. But there was a coding task and that was good. Going on.
+
+## File System
+
+Reference to file
