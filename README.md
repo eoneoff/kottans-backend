@@ -171,3 +171,7 @@ Comparing to previous lesson (Patterns) if was very short and easy, even shorter
 [secret.txt](file_system/secret.txt)
 
 [file_system_task.js](file_system/file_system_task.js)
+
+## Python Basics 1
+
+[HackerRank](https://www.hackerrank.com/eoneoff?hr_r=1)
