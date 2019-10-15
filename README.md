@@ -168,4 +168,6 @@ Comparing to previous lesson (Patterns) if was very short and easy, even shorter
 
 ## File System
 
-Reference to file
+[secret.txt](file_system/secret.txt)
+
+[file_system_task.js](file_system/file_system_task.js)
