@@ -171,3 +171,18 @@ Comparing to previous lesson (Patterns) if was very short and easy, even shorter
 [secret.txt](file_system/secret.txt)
 
 [file_system_task.js](file_system/file_system_task.js)
+
+## Relational Databases Basics
+
+[select.sql](sql_basics/select.sql)
+
+```sql
+SELECT p.first_name, p.last_name, COUNT(DISTINCT o.id) as total_orders,
+SUM(oi.quantity) as total_items_bought,
+SUM(oi.quantity * i.price - oi.discount) AS total_money_spent
+FROM person as p
+LEFT OUTER JOIN `order` as o ON o.person_id = p.id
+LEFT OUTER JOIN order_item as oi on oi.order_id = o.id
+LEFT OUTER JOIN item AS i ON i.id = oi.item_id
+GROUP BY p.id, p.first_name, p.last_name
+```
