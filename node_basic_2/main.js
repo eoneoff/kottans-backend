@@ -1,4 +1,7 @@
+'use strict';
+
 const {showWeather} = require('./showWeather');
+
 const argv = require('yargs').
     option('range', {
         alias:'r',
@@ -16,5 +19,5 @@ const argv = require('yargs').
 const mode = argv.range == 'week' ? 'forecast' : 'weather';
 const units = argv.units == 'farenheit' ? 'imperial' : 'metric';
 
-showWeather(mode, argv.location, units);
+showWeather(mode, argv.location || '', units);
 

@@ -1,21 +1,37 @@
+'use strict';
+
 const {getWeather} = require('./getWeather');
+const {icons} = require('./weatherIcons');
+const {saveCities} = require('./manageCities');
+const {wrongCity} = require('./wrongCity');
+const table = require('cli-table3');
+const {cyan:c} = require('chalk');
 
-module.exports.showWeather = function(mode, location, units) {
-    getWeather(mode, location, units).then(data => {
-        if (mode == 'weather') showDay(data, 
-            units == 'imperial' ? 'F°' : 'C°',
-            units == 'imperial' ? 'mph' : 'm/s');
-    });
-};
+function showBlocks(data, tUnit, wUnit) {
+    for (const day of data) {
+        dayBlock(day, tUnit, wUnit);
+    }
+}
 
-function showDay(data, tUnit, wUnit) {
-    process.stdout.write('\n*******************************************************\n\n');
-    process.stdout.write(`Location: ${data.name}\n`);
-    process.stdout.write(`Date: ${new Date(data.dt * 1000)}\n`);
-    process.stdout.write(`Temperature: ${data.main.temp}${tUnit}\n`);
-    process.stdout.write(`Maximum temperature: ${data.main.temp_max}${tUnit} Minimum temperature: ${data.main.temp_min}${tUnit}\n`);
-    process.stdout.write(`Wind: ${windDirection(data.wind.deg)} ${data.wind.speed}${wUnit}\n`);
-    process.stdout.write('\n*******************************************************\n\n');
+function dayBlock(data, tUnit, wUnit) {
+    const block = new table({chars:{
+        'top-mid':'─', 'bottom-mid':'─',
+        'left-mid': '', 'mid': '', 'mid-mid': '',
+        'right-mid': '', 'middle': ' '
+    }, colWidths:[17, 40]});
+    block.push([icons[data.icon], weatherData(data, tUnit, wUnit)]);
+    process.stdout.write(block.toString() + '\n'); 
+}
+
+function weatherData(data, tUnit, wUnit) {
+    return `\n${c('Location:')} ${data.city}\n`
+    + `${c('Date:')} ${data.date.toDateString()}\n`
+    + `${c('Time')} ${data.date.toLocaleTimeString()}\n`
+    + `${data.description}\n`
+    + `${c('Temperature:')} ${data.temp}${tUnit}\n`
+    + `${c('Maximum temperature:')} ${data.maxTemp}${tUnit}\n`
+    + `${c('Minimum temperature:')} ${data.minTemp}${tUnit}\n`
+    + `${c('Wind:')} ${windDirection(data.wind.deg)} ${data.wind.speed}${wUnit}\n`;
 }
 
 function windDirection(wind) {
@@ -28,3 +44,17 @@ function windDirection(wind) {
     if (wind < 292) return 'W';
     return 'NW';
 }
+
+module.exports.showWeather = function showWeather(mode, location, units) {
+    getWeather(mode, location, units).then(data => {
+        showBlocks (data, 
+            units == 'imperial' ? 'F°' : 'C°',
+            units == 'imperial' ? 'mph' : 'm/s',
+            data.name);
+        saveCities(location);
+    }).catch(error => {
+        if ((error.response.data || {}).message == 'city not found' || (error.response.data || {}).message == 'Nothing to geocode') {
+            wrongCity(location).then(c => showWeather(mode, c, units));
+        } else throw (error);
+    });
+};
